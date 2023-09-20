@@ -1,17 +1,18 @@
 import 'package:bytebank/screens/contacts_list.dart';
 import 'package:bytebank/screens/transactions_list.dart';
+import 'package:bytebank/widgets/appDependecies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import '../database/dao/contact_dao.dart';
 
 class Dashboard extends StatelessWidget {
-  final ContactDao contactDao;
-
-  const Dashboard({Key key, this.contactDao}) : super(key: key);
+  const Dashboard({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var contactDao = AppDependencies.of(context).contactDao;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Dashboard'),
@@ -36,7 +37,7 @@ class Dashboard extends StatelessWidget {
                       FeatureItem(
                         'Transfer',
                         Icons.monetization_on,
-                        onClick: () => _showContactsList(context),
+                        onClick: () => _showContactsList(context, contactDao),
                       ),
                       FeatureItem(
                         'Transaction Feed',
@@ -54,12 +55,10 @@ class Dashboard extends StatelessWidget {
     );
   }
 
-  void _showContactsList(BuildContext context) {
+  void _showContactsList(BuildContext context, ContactDao contactDao) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => ContactsList(
-          dao: contactDao,
-        ),
+        builder: (context) => ContactsList(),
       ),
     );
   }

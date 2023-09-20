@@ -9,23 +9,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
+import '../actions/actions.dart';
 import '../mocks/contact_dao.dart';
+import '../mocks/transaction_web_client.dart';
 
 void main() {
   testWidgets("Should save contact", (tester) async {
     final mockDao = MockContactDao();
+    var webClient = MockTransactionWebClient();
+
     await tester.pumpWidget(BytebankApp(
       contactDao: mockDao,
+      webClient: webClient,
     ));
 
     final dashboard = find.byType(Dashboard);
     expect(dashboard, findsOneWidget);
 
-    final transferFeature = find.byWidgetPredicate(
-        (widget) => widget is FeatureItem && widget.name == "Transfer");
-    expect(transferFeature, findsOneWidget);
-
-    await tester.tap(transferFeature);
+    await clickTransferFeature(tester);
     await tester.pumpAndSettle();
 
     final contactList = find.byType(ContactsList);

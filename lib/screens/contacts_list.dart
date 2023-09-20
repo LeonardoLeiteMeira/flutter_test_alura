@@ -3,12 +3,11 @@ import 'package:bytebank/database/dao/contact_dao.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/screens/contact_form.dart';
 import 'package:bytebank/screens/transaction_form.dart';
+import 'package:bytebank/widgets/appDependecies.dart';
 import 'package:flutter/material.dart';
 
 class ContactsList extends StatefulWidget {
-  final ContactDao dao;
-
-  const ContactsList({Key key, @required this.dao}) : super(key: key);
+  const ContactsList({Key key}) : super(key: key);
 
   @override
   _ContactsListState createState() => _ContactsListState();
@@ -17,13 +16,14 @@ class ContactsList extends StatefulWidget {
 class _ContactsListState extends State<ContactsList> {
   @override
   Widget build(BuildContext context) {
+    var dao = AppDependencies.of(context).contactDao;
     return Scaffold(
       appBar: AppBar(
         title: Text('Transfer'),
       ),
       body: FutureBuilder<List<Contact>>(
-        initialData: List(),
-        future: widget.dao.findAll(),
+        initialData: [],
+        future: dao.findAll(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
@@ -38,7 +38,7 @@ class _ContactsListState extends State<ContactsList> {
               return ListView.builder(
                 itemBuilder: (context, index) {
                   final Contact contact = contacts[index];
-                  return _ContactItem(
+                  return ContactItem(
                     contact,
                     onClick: () {
                       Navigator.of(context).push(
@@ -61,9 +61,7 @@ class _ContactsListState extends State<ContactsList> {
           Navigator.of(context)
               .push(
                 MaterialPageRoute(
-                  builder: (context) => ContactForm(
-                    dao: widget.dao,
-                  ),
+                  builder: (context) => ContactForm(),
                 ),
               )
               .then((value) => setState(() {}));
@@ -76,11 +74,11 @@ class _ContactsListState extends State<ContactsList> {
   }
 }
 
-class _ContactItem extends StatelessWidget {
+class ContactItem extends StatelessWidget {
   final Contact contact;
   final Function onClick;
 
-  _ContactItem(
+  ContactItem(
     this.contact, {
     @required this.onClick,
   });
