@@ -1,4 +1,14 @@
-# bytebank
+# Alura Course for tests in Flutter
+Sections of this course
+- First unit tests and widget tests
+- Widget tests and mockito lib
+- Testing flows
+- Simulate behaviors
+- Finish main flow
+
+The project used for this course was bytebank. 
+
+## bytebank
 
 A new Bytebank project.
 
