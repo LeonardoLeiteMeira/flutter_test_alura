@@ -19,6 +19,7 @@ class _TransactionAuthDialogState extends State<TransactionAuthDialog> {
     return AlertDialog(
       title: Text('Authenticate'),
       content: TextField(
+        key: Key("transactionAuthDialogTextFieldPassword"),
         controller: _passwordController,
         obscureText: true,
         maxLength: 4,
